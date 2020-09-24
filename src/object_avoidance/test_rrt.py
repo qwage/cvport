@@ -9,6 +9,7 @@ Computer Vision
 
 # Importing modules
 from rrt_model import RRT
+from spline_traj import BSplineSmooth
 import random
 import math
 import matplotlib.pyplot as plt
@@ -68,7 +69,7 @@ def clear_obstacle(point, obstacles):
             return False  # Collides with obstacle
     return True  # Clear
 
-def main(json_export=False, num=0):
+def main(json_export=False, num=0, smooth=True):
     """
     Main function
     :return: None
@@ -87,20 +88,31 @@ def main(json_export=False, num=0):
     x_opt_path = [x for (x, y) in opt_path]  # Extracting x values
     y_opt_path = [y for (x, y) in opt_path]  # Extracting y values
 
+
+    ##### IMPORTANT #####
+    #  Smoothen the path using the B-Spline Interpolation
+    if smooth is True:
+        bsps = BSplineSmooth(x_opt_path, y_opt_path, kval=2, sval=10, point_interval=0.01)
+        x_smooth_path, y_smooth_path = bsps.spline_traj()
+
     # Plotting the optimal path
     if opt_path is None:
         print("Could not find optimal path.")
     else:
         print("Optimal path has been found.")
 
+        # Plot/animate the trajectory generation 
         rrt.plot_simulation()
         plt.plot(x_opt_path, y_opt_path, '-r', linewidth=2)
-        # plt.plot(x_smooth_path, y_smooth_path, '-b', linewidth=1.5)
+
+        if smooth is True:
+            plt.plot(x_smooth_path, y_smooth_path, '-b', linewidth=1.5)
+
         plt.grid(True)
         plt.pause(0.01)
         plt.show(block=False)
 
-        if json_export == True:
+        if json_export is True:
             dir_path = os.path.dirname(os.path.realpath(__file__))
 
             data_file_name = 'path_data' + str(num) + '.json'
@@ -127,5 +139,5 @@ def main(json_export=False, num=0):
                 json.dump(opt_path, f, ensure_ascii=False, indent=4)
 
 if __name__ == '__main__':
-    main(json_export=False, num=0)
+    main(json_export=False, num=0, smooth=True)
 

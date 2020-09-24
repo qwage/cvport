@@ -26,7 +26,7 @@ class BSplineSmooth:
         """
 
         self.x_points = np.asarray(x_points, dtype=float)
-        self.y_points = np.asarray(y_points, dypte=float)
+        self.y_points = np.asarray(y_points, dtype=float)
         self.kval = kval
         self.sval = sval
         self.point_interval = point_interval
@@ -35,7 +35,7 @@ class BSplineSmooth:
         # self.x_points = np.reshape(self.x_points, (np.size(self.x_points), 1))
         # self.y_points = np.reshape(self.y_points, (np.size(self.y_points), 1))
 
-    def spline_data(self):
+    def spline_traj(self):
         """
         Function that conducts the main B-Spline procedure
         """
