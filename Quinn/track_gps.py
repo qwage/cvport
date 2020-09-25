@@ -13,7 +13,7 @@ alt = [] #altitude in meters
 hgt = [] #MSL height
 
 count = 0
-
+f.open('lat_data.txt')
 
 for line in file:
     chunk = re.split(',+',line)
@@ -24,6 +24,8 @@ for line in file:
     dilu.append(chunk[8])
     alt.append([9])
     hgt.append([10])
+
+
 
 
 lat_change = float(lat[1]) - float(lat[0]) 
