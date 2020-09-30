@@ -13,7 +13,7 @@ alt = [] #altitude in meters
 hgt = [] #MSL height
 
 count = 0
-f.open('lat_data.txt')
+
 
 for line in file:
     chunk = re.split(',+',line)
