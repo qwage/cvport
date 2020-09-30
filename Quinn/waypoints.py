@@ -40,6 +40,7 @@ def visual(path, width, height):
     pygame.display.set_caption("A* Path Finding")
     bg = pygame.image.load(path)
     #gameDisplay.blit(bg, (0, 0))
+    return win
 
 # - - - - - - - - - - - - - - - - - - - - - - #
 
@@ -148,7 +149,8 @@ def get_mouse_pos(pos, rows, width):
     col = x // gap
     return row, col
 
-def main(win, width):
+def Test(win, width):
+    draw(win, grid, ROWS, width)
     ROWS = 254
     grid = make_grid(Rows, width)
     start = None
@@ -167,7 +169,7 @@ def main(win, width):
                 pos = pygame.mouse.get_pos()
                 row, col = get_mouse_pos(pos, ROWS, width)
                 pixle = grid[row][col]
-                
+
                 if not start:
                     start = pixle
                     start.make_start
@@ -180,10 +182,8 @@ def main(win, width):
                     pass
 
             elif pygame.mouse.get_pressed()[2]: #RIGHT Mouse Button Press
-            
-
-
-    pygame.quit
+                pass
+    pygame.quit()
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
@@ -203,4 +203,5 @@ if __name__ == "__main__":
     path = 'C:\\Users\\quinn\\Documents\\Semester 8\\OpenCV Class\\Project\\cvport\\Quinn\\maze.jpg'
     path2 = 'C:\\Users\\quinn\\Documents\\Semester 8\\OpenCV Class\\Project\\cvport\\mapBW.png'
     width, height = get_bwMap(path)
-    visual(path2, width, height)
+    win = visual(path2, width, height)
+    Test(win, width)
