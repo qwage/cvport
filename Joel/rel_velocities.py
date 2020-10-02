@@ -43,18 +43,18 @@ r2 = np.mean(depth2[coords2[0]-1:coords2[2]-1])
 r1 = np.mean(depth1[coords1[0]-1:coords1[2]-1])
 
 #test case:
-theta2 = 0 *m.pi/180
+theta2 = 1.5 *m.pi/180
 theta1 = 0 *m.pi/180
-r2 = 50
-r1 = 40
+r2 = 49.5
+r1 = 50
 
 #CALCULATING POLAR v(r,theta) AND CARTESIAN v(x,z) VELOCITIES
 v_polar = [round((r2-r1)/dt,2) , round(0.5*(r2+r1)*(theta2-theta1)/dt,2)] #depth units per second, rad/s 
 v_cart =  [round((r2*m.sin(theta2)-r1*m.sin(theta1))/dt,2),round((r2*m.cos(theta2)-r1*m.cos(theta1))/dt,2)]
 
 #OUTPUT
-print("\nObject angle changes from "+ str(round(theta1*180/m.pi,3)) + " to " +str(round(theta2*180/m.pi,3)) +" degrees")
-print("Object depth changes from "+ str(round(r1,2)) + " to " +str(round(r2,2)) +" units")
+print("\nObject angle changed from "+ str(round(theta1*180/m.pi,3)) + " to " +str(round(theta2*180/m.pi,3)) +" degrees in "+ str(dt)+" seconds")
+print("Object depth changed from "+ str(round(r1,2)) + " to " +str(round(r2,2)) +" units in "+ str(dt)+" seconds")
 
 print("Polar velocity v(r,theta) = " +str(v_polar)+ "  (unit/s, rad/s)")
 print("Cartesian velocity v(x,z) = " +str(v_cart)+ "  (unit/s)")
