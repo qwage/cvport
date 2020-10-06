@@ -47,13 +47,14 @@ def visual(path, width, height):
 
 # - - - - - - - Coloration of Pixles Class - - - - - - - - - -  #
 class pixle:
-    def __init__(self, row, col, width, total_rows):
+    def __init__(self, row, col, width, height, total_rows):
         self.row = row
         self.col = col
-        self.x = row * width
+        self.x = row * height
         self.y = col * width
         self.neighbors = []
         self.width = width
+        self.height = height
         self.total_rows = total_rows
         
     def get_pos(self):
@@ -88,9 +89,6 @@ class pixle:
 
     def make_end(self):
         self.color = TURQUOISE
-
-    def make_path(self):
-        self.color = PURPLE
 
     def make_path(self):
         self.color = PURPLE
@@ -137,7 +135,7 @@ def draw(win, grid, rows, width):
 
     for row in grid:
         for pixle in row:
-            spot.draw(win)
+            pixle.draw(win)
 
     draw_grid(win, rows, width)
     pygame.display.update()
