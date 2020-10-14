@@ -10,6 +10,7 @@ Computer Vision
 import numpy as np 
 from scipy.interpolate import splprep, splev 
 
+
 class BSplineSmooth:
     """
     Class of the smoothing out a trajectory using the B-Spline method

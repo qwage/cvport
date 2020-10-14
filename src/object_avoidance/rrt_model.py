@@ -37,7 +37,7 @@ class RRT:
             self.parent = None
 
     def __init__(self, start, goal, obstacles, xy_field, extend_dist, velocity,
-                 max_angle, iterations):
+                 iterations):
         """
         Setting Parameters
         :param start: Starting position of simulation [x,y]
@@ -46,7 +46,6 @@ class RRT:
         :param xy_field: The field size of simulation [min,max]
         :param extend_dist: Distance to extend for each step
         :param velocity: Velocity of maneuvering
-        :param max_angle: Angle limit that the vehicle can turn
         :param iterations: Iterations for the simulation
         """
 
@@ -57,7 +56,6 @@ class RRT:
         self.field_upper_limit = max(xy_field)
         self.extend_dist = extend_dist
         self.velocity = velocity
-        self.max_angle = max_angle
         self.iterations = iterations
         self.theta1 = 0  # Angle between child and grandparent
         self.theta2 = None  # Angle between child and parent
@@ -80,11 +78,11 @@ class RRT:
 
             # Check constraints
             # Collision and angle
-            if self.obstacle_check(next_node, self.obstacles) or self.angle_check(next_node):
+            if self.obstacle_check(next_node, self.obstacles) :
                 self.nodes.append(next_node)
 
             # Plot Simulation
-            if show_animation and i % 50 == 0:
+            if show_animation and i % 10 == 0:
                 self.plot_simulation(rand_node)
 
             # Approaching goal
@@ -154,24 +152,6 @@ class RRT:
         next_node.parent = node1  # Set the departing node as parent
 
         return next_node
-
-    def angle_check(self, node):
-        """
-        Function to check if the angle satisfies conditions
-        :param node: The arriving node
-        :return: Boolean of True/False of whether the condition is satisfied
-        """
-
-        if node is None:  # Check if node is empty
-            return False
-
-        closest_node2node_parent_idx = self.get_closest_node_index(self.nodes, node.parent)
-        closes_node2node_parent = self.nodes[closest_node2node_parent_idx]
-        _, self.theta1 = self.calc_distance_and_angle(closes_node2node_parent, node.parent)
-        if self.theta2 - self.theta1 > self.max_angle:
-            return False  # Not satisfied
-
-        return False  # Satisfied
 
     def plot_simulation(self, rand_node=None):
         """

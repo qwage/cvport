@@ -82,7 +82,7 @@ def main(json_export=False, num=0, smooth=True):
 
     # Initialize parameters for RRT
     rrt = RRT(start=[0, 0], goal=goal_position, obstacles=obstacles, xy_field=[-2, 20],
-              extend_dist=0.4, velocity=0.04, max_angle=math.pi/4, iterations=2000)
+              extend_dist=0.4, velocity=0.04, iterations=2000)
 
     opt_path = rrt.path_planning(show_animation=True)
     x_opt_path = [x for (x, y) in opt_path]  # Extracting x values

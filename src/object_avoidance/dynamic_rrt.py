@@ -5,14 +5,17 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter)
+import random
+
 
 class DYNRRT:
     # dynamic rrt model 
 
     def __init__(self, obstacle_info, rrt_extension, rrt_vel, start, goal, 
-                    prediction_time, field):
+                    prediction_time, field, iters):
         self.obstacle_pos = obstacle_info[:, 0:2]
-        self.obstacle_vel = obstacle_info[:, 2:]
+        self.obstacle_vel = obstacle_info[:, 2:-1]
+        self.obstacle_radii = obstacle_info[:,-1]
         self.rrt_extension = rrt_extension
         self.rrt_vel = rrt_vel
         self.obstacle_final_pos = None
@@ -26,6 +29,8 @@ class DYNRRT:
         self.y_smooth = None
         self.obstacles = None
         self.flag = True
+        self.iters = iters
+        self.smootherPath = None
 
     def generate_path(self):
         self.predict_obstacle_path()
@@ -35,7 +40,7 @@ class DYNRRT:
             self.obstacles = dyn_obstacles
             # run rrt
             rrt = RRT(start=self.start, goal=self.goal, obstacles=dyn_obstacles, xy_field=self.field,
-                        extend_dist=self.rrt_extension, velocity=self.rrt_vel, iterations=100)
+                        extend_dist=self.rrt_extension, velocity=self.rrt_vel, iterations=self.iters)
             
             opt_path = rrt.path_planning(show_animation=True)
             self.opt_path = opt_path[::-1]
@@ -51,9 +56,15 @@ class DYNRRT:
         return
 
     def smooth_path(self):
-        x_opt_path = [x for (x, y) in self.opt_path]  # Extracting x values
-        y_opt_path = [y for (x, y) in self.opt_path]  # Extracting y values
-        bsps = BSplineSmooth(x_opt_path, y_opt_path, kval=2, sval=10, point_interval=0.01)
+        smoothJag = SmoothJagged(path_points=self.opt_path, maxIterations=200, 
+                                    obstacles=self.obstacles)
+        smootherOptPath = smoothJag.byebye_jagged()
+        self.smootherPath = smootherOptPath
+
+        x_opt_path = [x for (x, y) in smootherOptPath]  # Extracting x values
+        y_opt_path = [y for (x, y) in smootherOptPath]  # Extracting y values
+
+        bsps = BSplineSmooth(x_opt_path, y_opt_path, kval=2, sval=50, point_interval=0.05)
         x_smooth_path, y_smooth_path = bsps.spline_traj()
         self.x_smooth, self.y_smooth = x_smooth_path, y_smooth_path
         return x_smooth_path, y_smooth_path
@@ -62,17 +73,6 @@ class DYNRRT:
         new_node = self.obstacle_pos + self.obstacle_vel * self.prediction_time
         self.obstacle_final_pos = new_node
         return 
-
-
-    # def get_lines(self, points):
-    #     slope, y_insct, xmax, xmin = [], [], [], []
-    #     for i in range(points.shape[0] - 1):
-    #         m_temp, b_temp = self.get_line_coeffs(points[i], points[i + 1])
-    #         slope.append(m_temp)
-    #         y_insct.append(b_temp)
-    #         xmax.append(max(points[i, 0], points[i + 1, 0]))
-    #         xmin.append(min(points[i, 0], points[i + 1, 0]))
-    #     return slope, y_insct, xmax, xmin
 
     def get_line(self, point1, point2):
         slope, y_insct = self.get_line_coeffs(point1, point2)
@@ -98,6 +98,7 @@ class DYNRRT:
         plt.scatter(self.goal[0], self.goal[1], c='r')
 
         if not self.flag:
+            plt.plot([x for (x, y) in self.smootherPath], [y for (x, y) in self.smootherPath], '--g')
             plt.plot(self.x_smooth, self.y_smooth, c='b')
             for (x_center, y_center, radius) in self.obstacles:
                 circle = plt.Circle((x_center, y_center), radius, color='k')
@@ -107,9 +108,12 @@ class DYNRRT:
                 plt.plot([pt1[0], pt2[0]], [pt1[1], pt2[1]], '-g')
 
         plt.grid(which='both', axis='both', linestyle=':')
-        ax.xaxis.set_major_locator(MultipleLocator(10))
+        ax.xaxis.set_major_locator(MultipleLocator(5))
         ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
-        ax.xaxis.set_minor_locator(MultipleLocator(5))
+        ax.xaxis.set_minor_locator(MultipleLocator(1))
+        ax.yaxis.set_major_locator(MultipleLocator(5))
+        ax.yaxis.set_major_formatter(FormatStrFormatter('%d'))
+        ax.yaxis.set_minor_locator(MultipleLocator(1))
         plt.show()
 
     @staticmethod
@@ -128,14 +132,12 @@ class DYNRRT:
     def gen_obstacle_line(self):
         self.make_lines()
         obstacles = []
+        i = 0
         for m, b, xmax, xmin, d in self.line_info:
-            for xcenter in np.linspace(xmin, xmax, math.ceil(d**3)):
-                circle = (xcenter, m * xcenter + b, 1)
+            for xcenter in np.linspace(xmin, xmax, math.ceil(d**2)):
+                circle = (xcenter, m * xcenter + b, self.obstacle_radii[i])
                 obstacles.append(circle)
-        # temp = np.array(obstacles)
-        # obst_dist = cdist([self.nodes[-1]], temp[:, :2], 'euclidean')
-        # idx = np.where(obst_dist <= 1.5)
-        # obstacles = np.delete(temp, idx, axis=0)
+            i+=1
         return obstacles
 
     
@@ -173,15 +175,142 @@ class DYNRRT:
         return False  # There are no intersections
 
 
+class SmoothJagged:
+
+    def __init__(self, path_points, maxIterations, obstacles):
+        self.path = path_points
+        self.maxIter = maxIterations
+        self.obstacleList = obstacles
+
+    def get_path_length(self):
+        le = 0
+        for i in range(len(self.path) - 1):
+            dx = self.path[i + 1][0] - self.path[i][0]
+            dy = self.path[i + 1][1] - self.path[i][1]
+            d = math.sqrt(dx * dx + dy * dy)
+            le += d
+
+        return le
+
+
+    def get_target_point(self, targetL):
+        le = 0
+        ti = 0
+        lastPairLen = 0
+        for i in range(len(self.path) - 1):
+            dx = self.path[i + 1][0] - self.path[i][0]
+            dy = self.path[i + 1][1] - self.path[i][1]
+            d = math.sqrt(dx * dx + dy * dy)
+            le += d
+            if le >= targetL:
+                ti = i - 1
+                lastPairLen = d
+                break
+
+        partRatio = (le - targetL) / lastPairLen
+
+        x = self.path[ti][0] + (self.path[ti + 1][0] - self.path[ti][0]) * partRatio
+        y = self.path[ti][1] + (self.path[ti + 1][1] - self.path[ti][1]) * partRatio
+
+        return [x, y, ti]
+
+
+    def line_collision_check(self, first, second):
+        # Line Equation
+
+        x1 = first[0]
+        y1 = first[1]
+        x2 = second[0]
+        y2 = second[1]
+        try:
+            a = y2 - y1
+            b = -(x2 - x1)
+            c = y2 * (x2 - x1) - x2 * (y2 - y1)
+        except ZeroDivisionError:
+            return False
+
+        for (ox, oy, rad) in self.obstacleList:
+            d = abs(a * ox + b * oy + c) / (math.sqrt(a * a + b * b))
+            if d <= rad:
+                return False
+        return True  # OK
+
+    def clean_pathpoints(self):
+        # Removes redundant points 
+        temp_path = np.array(self.path)
+        for i in range(temp_path.shape[0]-1):
+            point1 = temp_path[i]
+            point2 = temp_path[i+1]
+            if np.all(point1 - point2 == 0):
+                self.path = np.delete(self.path, i, 0)
+        return 
+
+    def byebye_jagged(self):
+        le = self.get_path_length()
+        for i in range(self.maxIter):
+            # Sample two points
+            pickPoints = [random.uniform(0, le), random.uniform(0, le)]
+            pickPoints.sort()
+            first = self.get_target_point(pickPoints[0])
+            second = self.get_target_point(pickPoints[1])
+            if first[2] <= 0 or second[2] <= 0:
+                continue
+            if (second[2] + 1) > len(self.path):
+                continue
+            if second[2] == first[2]:
+                continue
+            # collision check
+            if not self.line_collision_check(first, second):
+                continue
+            # Create New path
+            newPath = []
+            newPath.extend(self.path[:first[2] + 1])
+            newPath.append([first[0], first[1]])
+            newPath.append([second[0], second[1]])
+            newPath.extend(self.path[second[2] + 1:])
+            self.path = newPath
+            le = self.get_path_length()
+        self.clean_pathpoints()
+        return self.path
+
+
+def clear_obstacle(point, obstacles):
+    """
+    Function to check if the arriving node collides with any obstacles
+    :param point: Random point
+    :param obstacles: The list of obstacles
+    :return: Boolean of True/False of whether there is no collision
+    """
+
+    for (x_center, y_center, _, __, radius) in obstacles:
+        x_distance = x_center - point[0]
+        y_distance = y_center - point[1]
+        distance = math.sqrt(x_distance**2 + y_distance**2)
+        if distance <= radius+3:
+            return False  # Collides with obstacle
+    return True  # Clear
+
+def update_goal(goal_point):
+    return goal_point + [3, 0]
+
 # Generate random obstacle array
-sz = 4
+sz = 10
 positions = np.random.uniform(-25, 25, (sz, 2))
-velocities = np.random.uniform(0.5, 2.0, (sz, 2))
-obstacle_array = np.concatenate((positions, velocities), axis=1)
+velocities = np.random.uniform(-2.0, 2.0, (sz, 2))
+radii = np.random.uniform(0.5, 1.5, (sz, 1))
+obstacle_array = np.concatenate((positions, velocities, radii), axis=1)
+
+# Update goal point if there is a obstacle or its course on the goal point
+end = [25, 0]
+while True:
+    if not clear_obstacle(end, obstacle_array):
+        end = update_goal(end)
+    else:
+        break
 
 # Initialize the dynamic rrt class 
-dynamic_rrt = DYNRRT(obstacle_info=obstacle_array, rrt_extension=15, rrt_vel=8, 
-                        start=[-25, 0], goal=[25, 0], prediction_time=4, field=[-50, 50])
+dynamic_rrt = DYNRRT(obstacle_info=obstacle_array, rrt_extension=10, rrt_vel=3, 
+                        start=[-25, 0], goal=end, prediction_time=3, field=[-50, 50], iters=500)
 
 print('Check if obstacles is in path. If there is run RRT.')
 opt_path, path_clear = dynamic_rrt.generate_path()   # generate optimal path
