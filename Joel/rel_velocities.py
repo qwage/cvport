@@ -7,7 +7,7 @@ def random2Ddepth(width,scaling_factor):
     import random as r
 
     depth = []
-    for i in range(width):
+    for _i in range(width):
         dist = r.randrange(1,100) / scaling_factor
         depth.append(int(dist))
         
