@@ -25,7 +25,7 @@ def main():
             print("Successfully created the directory %s " % file_path)
 
     for i in range(1, 4):
-        prg.main(json_export=True, num=i)
+        prg.main(json_export=True, num=i, smooth=True)
 
         # Deleting existing image files
         img_file_name = 'Random' + str(i) + '.png'

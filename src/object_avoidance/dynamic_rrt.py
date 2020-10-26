@@ -9,13 +9,13 @@ import random
 
 
 class DYNRRT:
-    # dynamic rrt model 
+    # dynamic rrt model
 
     def __init__(self, obstacle_info, rrt_extension, rrt_vel, start, goal, 
                     prediction_time, field, iters):
-        self.obstacle_pos = obstacle_info[:, 0:2]
+        self.obstacle_pos = obstacle_info[:, 0:2] 
         self.obstacle_vel = obstacle_info[:, 2:-1]
-        self.obstacle_radii = obstacle_info[:,-1]
+        self.obstacle_radii = obstacle_info[:, -1]
         self.rrt_extension = rrt_extension
         self.rrt_vel = rrt_vel
         self.obstacle_final_pos = None
@@ -310,7 +310,7 @@ while True:
 
 # Initialize the dynamic rrt class 
 dynamic_rrt = DYNRRT(obstacle_info=obstacle_array, rrt_extension=10, rrt_vel=3, 
-                        start=[-25, 0], goal=end, prediction_time=3, field=[-50, 50], iters=500)
+                        start=[-25, 0], goal=end, prediction_time=4, field=[-50, 50], iters=500)
 
 print('Check if obstacles is in path. If there is run RRT.')
 opt_path, path_clear = dynamic_rrt.generate_path()   # generate optimal path
