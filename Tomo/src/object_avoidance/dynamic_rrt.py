@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter)
 import random
-
+from datetime import datetime 
 
 class DYNRRT:
     # dynamic rrt model
@@ -42,7 +42,7 @@ class DYNRRT:
             rrt = RRT(start=self.start, goal=self.goal, obstacles=dyn_obstacles, xy_field=self.field,
                         extend_dist=self.rrt_extension, velocity=self.rrt_vel, iterations=self.iters)
             
-            opt_path = rrt.path_planning(show_animation=True)
+            opt_path = rrt.path_planning(show_animation=False) # change the setings for the animation manually
             self.opt_path = opt_path[::-1]
             path_clear = False
             self.flag = path_clear
@@ -293,6 +293,7 @@ def clear_obstacle(point, obstacles):
 def update_goal(goal_point):
     return goal_point + [3, 0]
 
+start = datetime.now()
 # Generate random obstacle array
 sz = 10
 positions = np.random.uniform(-25, 25, (sz, 2))
@@ -321,4 +322,7 @@ if not path_clear:
     x_smooth, y_smooth = dynamic_rrt.smooth_path()  # generate smooth path
 else:
     print("The path is clear. No path is generated and we go along the desired path.")
-dynamic_rrt.plot_trajectory()  # plot trajectory
+end = datetime.now()
+print(end - start)
+# dynamic_rrt.plot_trajectory()  # plot trajectory
+
