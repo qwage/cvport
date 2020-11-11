@@ -1,6 +1,8 @@
 #Each direction should run for 1 second then coast for 3 before
 #fulling stopping, hopefully this prevents breaking the motor hat
 
+#For the none variable for coasting it should be coming from the adafruit files
+
 import time
 import board
 from adafruit_motorkit import MotorKit
