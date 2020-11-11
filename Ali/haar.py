@@ -13,16 +13,16 @@ camera = PiCamera()
 cap = PiRGBArray(camera)
 
 while (1):
-    ret, img = cap.read()
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #ret, img = cap.read()
+    gray = cv2.cvtColor(cap, cv2.COLOR_BGR2GRAY)
     faces = haar_cascade_face.detectMultiScale(gray, 1.3, 5)
     #full = full_cascade.detectMultiScale(gray, 1.1, 5)
     #eye = eye_cascade.detectMultiScale(gray, 1.1, 5)
     
     for (x,y,w,h) in faces:
-        cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+        cv2.rectangle(cap,(x,y),(x+w,y+h),(255,0,0),2)
         roi_gray = gray[y:y+h, x:x+w]
-        roi_color = img[y:y+h, x:x+w]
+        roi_color = cap[y:y+h, x:x+w]
     '''
     for (x,y,w,h) in full:
         cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
@@ -35,7 +35,7 @@ while (1):
         roi_gray2 = gray[y:y+h, x:x+w]
         roi_color2 = img[y:y+h, x:x+w]
     '''
-    cv2.imshow('img',img)
+    cv2.imshow('img',cap)
     #print(psutil.virtual_memory().percent)
     k = cv2.waitKey(30) & 0xff
     if k == 27:
