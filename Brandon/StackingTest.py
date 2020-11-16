@@ -56,10 +56,10 @@ while (True):
 			randomdir = random.randint(0, 1)
 			print("Stepper %d" % i),
 			if (randomdir == 0):
-        	                dir = Raspi_MotorHAT.FORWARD
-	                        print("forward"),
+				dir = Raspi_MotorHAT.FORWARD
+				print("forward"),
 			else:
-	                        dir = Raspi_MotorHAT.BACKWARD
+				dir = Raspi_MotorHAT.BACKWARD
 				print("backward"),
 			randomsteps = random.randint(10,50)
 			print("%d steps" % randomsteps)

@@ -36,7 +36,7 @@ class PWM :
 
   @classmethod
   def softwareReset(cls):
-    #"Sends a software reset (SWRST) command to all the servo drivers on the bus"
+    "Sends a software reset (SWRST) command to all the servo drivers on the bus"
     cls.general_call_i2c.writeRaw8(0x06)        # SWRST
 
   def __init__(self, address=0x40, debug=False):
@@ -45,7 +45,7 @@ class PWM :
     self.address = address
     self.debug = debug
     if (self.debug):
-      print("Reseting PCA9685 MODE1 (without SLEEP) and MODE2")
+      print ("Reseting PCA9685 MODE1 (without SLEEP) and MODE2")
     self.setAllPWM(0, 0)
     self.i2c.write8(self.__MODE2, self.__OUTDRV)
     self.i2c.write8(self.__MODE1, self.__ALLCALL)
@@ -57,17 +57,17 @@ class PWM :
     time.sleep(0.005)                             # wait for oscillator
 
   def setPWMFreq(self, freq):
-    #"Sets the PWM frequency"
+    "Sets the PWM frequency"
     prescaleval = 25000000.0    # 25MHz
     prescaleval /= 4096.0       # 12-bit
     prescaleval /= float(freq)
     prescaleval -= 1.0
     if (self.debug):
-      print("Setting PWM frequency to %d Hz" % freq)
-      print("Estimated pre-scale: %d" % prescaleval)
+      print ("Setting PWM frequency to %d Hz" % freq)
+      print ("Estimated pre-scale: %d" % prescaleval)
     prescale = math.floor(prescaleval + 0.5)
     if (self.debug):
-      print("Final pre-scale: %d" % prescale)
+      print ("Final pre-scale: %d" % prescale)
 
     oldmode = self.i2c.readU8(self.__MODE1);
     newmode = (oldmode & 0x7F) | 0x10             # sleep
@@ -78,14 +78,14 @@ class PWM :
     self.i2c.write8(self.__MODE1, oldmode | 0x80)
 
   def setPWM(self, channel, on, off):
-    #"Sets a single PWM channel"
+    "Sets a single PWM channel"
     self.i2c.write8(self.__LED0_ON_L+4*channel, on & 0xFF)
     self.i2c.write8(self.__LED0_ON_H+4*channel, on >> 8)
     self.i2c.write8(self.__LED0_OFF_L+4*channel, off & 0xFF)
     self.i2c.write8(self.__LED0_OFF_H+4*channel, off >> 8)
 
   def setAllPWM(self, on, off):
-    #"Sets a all PWM channels"
+    "Sets a all PWM channels"
     self.i2c.write8(self.__ALL_LED_ON_L, on & 0xFF)
     self.i2c.write8(self.__ALL_LED_ON_H, on >> 8)
     self.i2c.write8(self.__ALL_LED_OFF_L, off & 0xFF)
