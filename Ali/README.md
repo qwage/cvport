@@ -49,7 +49,6 @@ ALSO: For fun, I created a collab google sheet which will demonstrate YOLO or/an
       https://colab.research.google.com/drive/13PYrnmTp5Q48vR_GRMnEN4T_6R5xorNm?usp=sharing
 
 
-————————————————————————————————————————————————————————---————————————————————————————————————————————————————————---—————————————————————————————————————————————-
-————————————————————————————————————————————————————————---————————————————————————————————————————————————————————---—————————————————————————————————————————————-
+————————————————————————————————————————————————————————————————————————
 For Any inquiries/issues, please contact me at: aalmakhm@purdue.edu or alialmakhmari99@hotmail.com
  
