@@ -36,7 +36,7 @@ II. Second, execute those two command lines below
 
 III. Third, navigate to your YOLO file which you downloaded from GitHub, and run this command to start YOLO
 
-	      python detect_realtime_tinyyolo_ncs.py --conf config/config.json
+	python detect_realtime_tinyyolo_ncs.py --conf config/config.json
 
 
 Now YOLO should work on your pi with no issues :). Note that you can change the threshold detection probability (percentage) by navigating to the config folder and
