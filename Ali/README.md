@@ -9,7 +9,7 @@ performed.
 Note: Running multiple Haarcascades is a computationally expensive operation and could slow down your camera (FPS).
 
 
-————————————————————————————————————————————————————————--------------------
+——————————————————————————————————————————————————————————————————————————————————————————
 2. Tiny-YOLO: READ this section if you are particularly interested on running the Tiny-YOLO program on your raspberry pi, which we will refer to as YOLO during the
    explanation process.
 
