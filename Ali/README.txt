@@ -46,7 +46,7 @@ detection probability.
 
 
 ALSO: For fun, I created a collab google sheet which will demonstrate YOLO or/and Tiny-YOLO on any YouTube video or a video from your computer.
-      https://colab.research.google.com/drive/1PuI9bYeM8O1OA82pI12oGopRJJrLWfs9?usp=sharing
+      https://colab.research.google.com/drive/13PYrnmTp5Q48vR_GRMnEN4T_6R5xorNm?usp=sharing
 
 
 ————————————————————————————————————————————————————————---————————————————————————————————————————————————————————---—————————————————————————————————————————————-
