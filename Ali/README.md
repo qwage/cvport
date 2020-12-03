@@ -1,3 +1,4 @@
+————————————————————————————————————————————————————————————————————————
 1. Haarcascade: READ this section if you are particularly interested on running the Haarcascad program
 
 There is not much to say about running the Haarcascade program on your machine. haar.py is the main file that will run the Haarcascade on your machine.It has three
