@@ -1,7 +1,3 @@
-# USAGE
-# python detect_realtime_tinyyolo_ncs.py --conf config/config.json \
-# 	--input videos/test_video.mp4
-
 # import the necessary packages
 from openvino.inference_engine import IENetwork
 from openvino.inference_engine import IEPlugin
