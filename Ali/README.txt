@@ -34,7 +34,7 @@ II. Second, execute those two command lines below
         workon openvino
         source ~/openvino/bin/setupvars.sh
 
-III. Third, navigate your YOLO file which you downloaded from GitHub, and run this command to start YOLO
+III. Third, navigate to your YOLO file which you downloaded from GitHub, and run this command to start YOLO
 
 	      python detect_realtime_tinyyolo_ncs.py --conf config/config.json
 
