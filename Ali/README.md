@@ -41,7 +41,7 @@ III. Third, navigate to your YOLO file which you downloaded from GitHub, and run
 	python detect_realtime_tinyyolo_ncs.py --conf config/config.json
 
 
-Now YOLO should work on your pi with no issues :). Note that you can change the threshold detection probability (percentage) by navigating to the config folder and
+Now YOLO should work on your pi with no issues :) Note that you can change the threshold detection probability (percentage) by navigating to the config folder and
 changing the “prob_threshold” variable to something else in the config.json file. The variable should be something between 0 and 1 to set the minimum threshold of
 detection probability. Also, note that this YOLO code has been trained to detect 80 different objects only. The list of those objects can be found in the coco.names file inside the yolo folder.
 
