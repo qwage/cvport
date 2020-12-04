@@ -11,6 +11,7 @@ Note: Running multiple Haarcascades is a computationally expensive operation and
    explanation process.
 
 There are few assumptions I am making about your raspberry pi that you will have to take care of before continuing:
+
 a. You have a raspberry pi 4 that has at least one 3.0 USB connector (the blue USB connector)
 
 b. You have the Neural Compute Stick 2 by Intel and a camera connected to your pi
