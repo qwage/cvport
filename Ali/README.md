@@ -12,9 +12,12 @@ Note: Running multiple Haarcascades is a computationally expensive operation and
 
 There are few assumptions I am making about your raspberry pi that you will have to take care of before continuing:
 a. You have a raspberry pi 4 that has at least one 3.0 USB connector (the blue USB connector)
+
 b. You have the Neural Compute Stick 2 by Intel and a camera connected to your pi
+
 c. You have a virtual environment called “cv” that has opencv and python configured on it. If not, I suggest you stop and go do that. An excellent source would be:
    https://www.pyimagesearch.com/2019/09/16/install-opencv-4-on-raspberry-pi-4-and-raspbian-buster/ 
+   
 d. You have a virtual environment called “openvino” that has opencv, python, and the Neural Compute Stick 2 packages on it. If not, I suggest you stop and go do 
    that. An excellent source would be: https://www.pyimagesearch.com/2019/04/08/openvino-opencv-and-movidius-ncs-on-the-raspberry-pi/
 
