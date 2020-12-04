@@ -21,6 +21,7 @@ c. You have a virtual environment called “cv” that has opencv and python con
    
 d. You have a virtual environment called “openvino” that has opencv, python, and the Neural Compute Stick 2 packages on it. If not, I suggest you stop and go do 
    that. An excellent source would be: https://www.pyimagesearch.com/2019/04/08/openvino-opencv-and-movidius-ncs-on-the-raspberry-pi/
+   
 
 After having those four things done and having your essentials with you (raspberry pi 4, camera, the Neural Compute Stick 2, etc), now we can continue. Note: The 
 YOLO code does not need configuration with the raspberry pi, its the Neural Compute Stick 2 that needs configuration with the raspberry pi. And to do it:
