@@ -1,11 +1,7 @@
 ————————————————————————————————————————————————————————————————————————
 1. Haarcascade: READ this section if you are particularly interested on running the Haarcascad program
 
-There is not much to say about running the Haarcascade program on your machine. haar.py is the main file that will run the Haarcascade on your machine.It has three
-main for loops, each one concerns a different Haarcascade for a different feature to be detected. In my program, the Haarcascades are for the eyes, the full human
-body, and the upper part of the human body. The xml files in the same directory define the features of those things we want to look for. Just make sure you have all
-the libraries required and the xml file(s) on the same directory. And make sure to comment/uncomment what for loop (Haarcascade) and lines you would like to be
-performed. 
+Running the Haarcascade program on your machine does not require much configuratoin. haar.py is the main file that will run the Haarcascade. It has three main for loops, each one concerns a different Haarcascade for a different feature to be detected. In my program, the Haarcascades are for the eyes, the full human body, and the upper part of the human body. The xml files in the same directory define the features of those things we want to look for. Just make sure you have all the libraries required and the xml file(s) on the same directory. And make sure to comment/uncomment what for loop(s) (Haarcascade) and lines you would like to be performed. 
 
 Note: Running multiple Haarcascades is a computationally expensive operation and could slow down your camera (FPS).
 
