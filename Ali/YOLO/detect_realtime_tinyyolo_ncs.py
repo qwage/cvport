@@ -149,7 +149,7 @@ while True:
 		y = obj["ymin"] - 15 if obj["ymin"] - 15 > 15 else \
 			obj["ymin"] + 15
 		
-		#Coordinate boxes starting from the bottom left coordinate and going anti-clockwise
+		#Coordinate boxes starting from the bottom left coordinate and going anti-clockwise around
 		Coordinates = [[obj["xmin"],obj["ymin"]], [obj["xmax"],obj["ymin"]], [obj["xmax"],obj["ymax"]], [obj["xmin"],obj["ymax"]]]
         
 		# draw a bounding box rectangle and label on the frame
