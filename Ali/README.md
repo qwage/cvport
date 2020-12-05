@@ -43,9 +43,7 @@ III. Third, navigate to your YOLO file which you downloaded from GitHub, and run
 
 Now YOLO should work on your pi with no issues :) Note that you can change the threshold detection probability (percentage) by navigating to the config folder and
 changing the “prob_threshold” variable to something else in the config.json file. The variable should be something between 0 and 1 to set the minimum threshold of
-detection probability. Also, note that this YOLO code has been trained to detect 80 different objects only. The list of those objects can be found in the coco.names file inside the yolo folder.
-
-
+detection probability. Also, note that this YOLO code has been trained to detect 80 different objects only. The list of those objects can be found in the coco.names file inside the yolo folder. In addition, if you are interested in the coordinates of the objects detetcted, there is a variable called "Coordinates" in the detect_realtime_tinyyolo_ncs.py file that saves all the objects coordinates.
 
 
 ALSO: For fun, I created a collab google sheet which will demonstrate YOLO or/and Tiny-YOLO on any YouTube video or a video from your computer. It can be used to   determine whether YOLO is the object detection algorithm you want on your pi or not.
