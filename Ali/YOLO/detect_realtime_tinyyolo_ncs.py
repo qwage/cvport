@@ -1,7 +1,3 @@
-# USAGE
-# python detect_realtime_tinyyolo_ncs.py --conf config/config.json \
-# 	--input videos/test_video.mp4
-
 # import the necessary packages
 from openvino.inference_engine import IENetwork
 from openvino.inference_engine import IEPlugin
@@ -149,7 +145,7 @@ while True:
 		y = obj["ymin"] - 15 if obj["ymin"] - 15 > 15 else \
 			obj["ymin"] + 15
 		
-		# Objects coordinates starting from the bottom left coordinate and going anti-clockwise around from each object detected in an instance
+		# objects coordinates starting from the bottom left coordinate and going anti-clockwise around for each object detected in an instance
 		Coordinates = [[obj["xmin"],obj["ymin"]], [obj["xmax"],obj["ymin"]], [obj["xmax"],obj["ymax"]], [obj["xmin"],obj["ymax"]]]
         
 		# draw a bounding box rectangle and label on the frame
