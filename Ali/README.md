@@ -46,7 +46,7 @@ changing the “prob_threshold” variable to something else in the config.json 
 detection probability. Also, note that this YOLO code has been trained to detect 80 different objects only. The list of those objects can be found in the coco.names file inside the yolo folder. In addition, if you are interested in the coordinates of the objects detetcted, there is a variable called "Coordinates" in the detect_realtime_tinyyolo_ncs.py file that saves all the objects coordinates.
 
 
-ALSO: For fun, I created a collab google sheet which will demonstrate YOLO or/and Tiny-YOLO on any YouTube video or a video from your computer. It can be used to   determine whether YOLO is the object detection algorithm you want on your pi or not.
+I created a collab google sheet which will demonstrate YOLO or/and Tiny-YOLO on any YouTube video or a video from your computer without any coding needed. It can be used to determine whether YOLO is the object detection algorithm you want on your pi or not.
       https://colab.research.google.com/drive/13PYrnmTp5Q48vR_GRMnEN4T_6R5xorNm?usp=sharing
 
 
