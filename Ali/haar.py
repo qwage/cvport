@@ -15,15 +15,16 @@ cap = PiRGBArray(camera)
 while (1):
     for frame in camera.capture_continuous(cap, format="bgr", use_video_port=True):
         img = frame.array
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = haar_cascade_face.detectMultiScale(gray, 1.3, 5)
-        #full = full_cascade.detectMultiScale(gray, 1.1, 5)
+        #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = haar_cascade_face.detectMultiScale(img, 1.3, 5)
+        #full = full_cascade.detectMultiScale(img, 1.1, 5)
         #eye = eye_cascade.detectMultiScale(gray, 1.1, 5)
-    
+        
         for (x,y,w,h) in faces:
             cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-            roi_gray = gray[y:y+h, x:x+w]
+            roi_gray = img[y:y+h, x:x+w]
             roi_color = img[y:y+h, x:x+w]
+        
         '''
         for (x,y,w,h) in full:
             cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
