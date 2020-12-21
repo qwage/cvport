@@ -26,17 +26,17 @@ d. You have a virtual environment called “openvino” that has opencv, python,
 After having those four things done and having your essentials with you (raspberry pi 4, camera, the Neural Compute Stick 2, etc), now we can continue. Note: The 
 YOLO code does not need configuration with the raspberry pi, its the Neural Compute Stick 2 that needs configuration with the raspberry pi. And to do it:
 
-I. First, on your openvino virtual environment run the below command to install the JSON-Minify package needed for this, and after, plug your Neural Compute Stick 2
+I. On your openvino virtual environment run the below command to install the JSON-Minify package needed for this, and after, plug your Neural Compute Stick 2
    in the 3.0 USB Connector on the Pi.
 
         pip install json_minify
 
-II. Second, execute those two command lines below
+II. Execute those two command lines below
 
         workon openvino
         source ~/openvino/bin/setupvars.sh
 
-III. Third, navigate to your YOLO file which you downloaded from GitHub, and run this command to start YOLO
+III. Navigate to your YOLO file which you downloaded from GitHub, and run this command to start YOLO
 
 	python detect_realtime_tinyyolo_ncs.py --conf config/config.json
 
